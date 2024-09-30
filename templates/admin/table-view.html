@@ -1,0 +1,367 @@
+{% extends 'admin/base/index.html' %}
+
+{% block content %} <!-- Template -->
+<div class="grid">
+    {% for row in table %}
+
+        {% if this_page == 'devices' %}
+            {% include 'admin/components/ID.html' %}
+            {% include 'admin/components/ROOM.html' %}
+            {% include 'admin/components/STATUS.html' %}
+        {% elif this_page == 'news' %}
+            {% include 'admin/components/ID.html' %}
+            {% include 'admin/components/TITLE.html' %}
+            {% include 'admin/components/DESC.html' %}
+            {% include 'admin/components/PHOTOS.html' %}
+            {% include 'admin/components/URL.html' %}
+        {% elif this_page == 'about' %}
+            {% include 'admin/components/ID.html' %}
+            {% include 'admin/components/TITLE.html' %}
+            {% include 'admin/components/DESC.html' %}
+            {% include 'admin/components/PHOTOS.html' %}
+        {% elif this_page == 'services' %}
+            {% include 'admin/components/ID.html' %}
+            {% include 'admin/components/NAME.html' %}
+            {% include 'admin/components/DESC.html' %} 
+            {% include 'admin/components/PRICE.html' %} 
+            {% include 'admin/components/PHOTOS.html' %}
+        {% elif this_page == 'guide-categories' %}
+            {% include 'admin/components/ID.html' %}
+            {% include 'admin/components/TITLE.html' %}
+            {% include 'admin/components/PHOTOS.html' %}
+        {% elif this_page == 'guides' %}
+            {% include 'admin/components/ID.html' %}
+            {% include 'admin/components/NAME.html' %}
+            {% include 'admin/components/DESC.html' %}
+            {% include 'admin/components/ADDRESS.html' %}
+            {% include 'admin/components/RECOMMEND.html' %}
+            {% include 'admin/components/PHOTOS.html' %}
+            {% include 'admin/components/URL.html' %}
+            {% include 'admin/components/CATEGORY.html' %}
+        {% elif this_page == 'menu' %}
+            {% include 'admin/components/ID.html' %}
+            {% include 'admin/components/NAME.html' %}
+            {% include 'admin/components/DESC.html' %} 
+            {% include 'admin/components/PRICE.html' %} 
+            {% include 'admin/components/PHOTOS.html' %}
+            {% include 'admin/components/URL.html' %}
+            {% include 'admin/components/RECOMMEND.html' %}
+        {% elif this_page == 'apps' %}
+            {% include 'admin/components/ID.html' %}
+            {% include 'admin/components/NAME.html' %}
+            {% include 'admin/components/URL.html' %}
+            {% include 'admin/components/PHOTOS.html' %}
+        {% endif %}
+
+        <!-- Controls -->
+        <div class="del-btn" id="{{row.ID}}" onclick="deleteRow(event)">Delete</div>
+        {% if loop.first %} 
+        <div class="submit-btn" onclick="handleSubmit()">Submit Updates</div> 
+        {% else %} 
+        <div></div>
+        {% endif %}
+
+    {% endfor %}
+
+    <!-- New Raw -->
+    {% if this_page == 'devices' %}
+        {% include 'admin/components/new/ID.html' %}
+        {% include 'admin/components/new/ROOM.html' %}
+        {% include 'admin/components/new/STATUS.html' %}
+    {% elif this_page == 'news' %}
+        {% include 'admin/components/new/ID.html' %}
+        {% include 'admin/components/new/TITLE.html' %}
+        {% include 'admin/components/new/DESC.html' %}
+        {% include 'admin/components/new/PHOTOS.html' %}
+        {% include 'admin/components/new/URL.html' %}
+    {% elif this_page == 'about' %}
+        {% include 'admin/components/new/ID.html' %}
+        {% include 'admin/components/new/TITLE.html' %}
+        {% include 'admin/components/new/DESC.html' %}
+        {% include 'admin/components/new/PHOTOS.html' %}
+    {% elif this_page == 'services' %}
+        {% include 'admin/components/new/ID.html' %}
+        {% include 'admin/components/new/NAME.html' %}
+        {% include 'admin/components/new/DESC.html' %} 
+        {% include 'admin/components/new/PRICE.html' %} 
+        {% include 'admin/components/new/PHOTOS.html' %}
+    {% elif this_page == 'guide-categories' %}
+        {% include 'admin/components/new/ID.html' %}
+        {% include 'admin/components/new/TITLE.html' %}
+        {% include 'admin/components/new/PHOTOS.html' %}
+    {% elif this_page == 'guides' %}
+        {% include 'admin/components/new/ID.html' %}
+        {% include 'admin/components/new/NAME.html' %}
+        {% include 'admin/components/new/DESC.html' %} 
+        {% include 'admin/components/new/ADDRESS.html' %}
+        {% include 'admin/components/new/RECOMMEND.html' %}
+        {% include 'admin/components/new/PHOTOS.html' %}
+        {% include 'admin/components/new/URL.html' %}
+        {% include 'admin/components/new/CATEGORY.html' %}
+    {% elif this_page == 'menu' %}
+        {% include 'admin/components/new/ID.html' %}
+        {% include 'admin/components/new/NAME.html' %}
+        {% include 'admin/components/new/DESC.html' %} 
+        {% include 'admin/components/new/PRICE.html' %} 
+        {% include 'admin/components/new/PHOTOS.html' %}
+        {% include 'admin/components/new/URL.html' %}
+        {% include 'admin/components/new/RECOMMEND.html' %}
+    {% elif this_page == 'apps' %}
+        {% include 'admin/components/new/ID.html' %}
+        {% include 'admin/components/new/NAME.html' %}
+        {% include 'admin/components/new/URL.html' %}
+        {% include 'admin/components/new/PHOTOS.html' %}
+    {% endif %}
+
+    <div class="add-btn hidden" onclick="handleAdd()">Add</div>
+
+    <!-- Add New Raw -->
+    <div class="add" onclick="addNewRow(event)">+</div>
+
+</div>
+{% endblock %}
+
+{% block script %} <!-- Script -->
+<script>
+
+async function deleteRow(event) {
+
+    const deleteCRUD = '{{ deleteCRUD|safe }}'
+    .replace('{EVENT_TARGET_ID}', event.target.id)
+
+    await fetch(deleteCRUD, { method: 'DELETE' })
+    window.location.reload()
+}
+
+async function handleSubmit() {
+
+    const updateCRUD_pool = {
+        room: '{{ updateCRUD.room|safe | default(None) }}',
+        status: '{{ updateCRUD.status|safe | default(None) }}',
+        name: '{{ updateCRUD.name|safe | default(None) }}',
+        url: '{{ updateCRUD.url|safe | default(None) }}',
+        desc: '{{ updateCRUD.desc|safe | default(None) }}',
+        price: '{{ updateCRUD.price|safe | default(None) }}',
+        address: '{{ updateCRUD.address|safe | default(None) }}',
+        recommend: '{{ updateCRUD.recommend|safe | default(None) }}',
+        category: '{{ updateCRUD.category|safe | default(None) }}',
+        photos: '{{ updateCRUD.photos|safe | default(None) }}'
+    }
+    
+    for (update of stagingArea) 
+    {
+        if(update.name === 'photos') 
+        {
+            for (let file of update.files) 
+            {
+                let formData = new FormData()
+                formData.append('photo', file)
+                try { 
+                    console.log('posting media...')
+                    await fetch('{{ media_upload_api }}', { method: 'POST', body: formData }) 
+                }
+                catch (error) { console.log(error) }
+            }
+
+            let updateCRUD = updateCRUD_pool[update.name]
+            .replace('{ID}', update.id)
+
+            await fetch(updateCRUD, { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ photos: update.value })
+            })
+        } 
+        else 
+        {
+            let updateCRUD = updateCRUD_pool[update.name]
+            .replace('{ID}', update.id)
+            .replace('{VALUE}', update.value)
+
+            await fetch(updateCRUD, { method: 'POST' })
+        }
+    }
+
+    window.location.reload()
+}
+
+async function handleAdd() {
+
+    const $ = async (id) => { switch(id) {
+
+        case 'new-photos': 
+        
+            const files = document.getElementById(id)?.files
+            const photos = []
+            
+            if (files) for (let file of files) {
+
+                let formData = new FormData()
+                formData.append('photo', file)
+
+                try { 
+                    console.log('posting media...')
+                    await fetch('{{ media_upload_api }}', { method: 'POST', body: formData }) 
+                }
+                catch (error) { console.log(error) }
+                photos.push(`../static/media/${file.name}`)
+            }
+
+            return photos.reverse()
+
+        case 'new-recommend': return document.getElementById(id)?.checked ? 1 : 0
+
+        default: return encodeURIComponent(document.getElementById(id)?.value) 
+
+    }}
+
+    const postCRUD = '{{ postCRUD|safe }}'
+    .replace('{NEW_ROOM}', await $('new-room'))
+    .replace('{NEW_STATUS}', await $('new-status'))
+    .replace('{NEW_NAME}', await $('new-name'))
+    .replace('{NEW_URL}', await $('new-url'))
+    .replace('{NEW_TITLE}', await $('new-title'))
+    .replace('{NEW_ADDRESS}', await $('new-address'))
+    .replace('{NEW_CATEGORY}', await $('new-category'))
+    .replace('{NEW_DESC}', await $('new-desc'))
+    .replace('{NEW_PRICE}', await $('new-price'))
+    .replace('{NEW_RECOMMENDED}', await $('new-recommend'))
+
+    let response = await fetch(postCRUD, { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ photos: await $('new-photos') })
+    })
+
+    response = await response.json()
+    if (response.error) alert(response.error)
+    else window.location.reload()
+}
+
+</script>
+{% endblock %}
+
+{% block style %} <!-- Style -->
+<style>
+
+a[href="{{ style.highlight }}"] {
+    color: rgb(244, 244, 244);
+    background-color: rgb(62, 62, 62);
+}
+.grid {
+    padding: 40px;
+    display: grid;
+    row-gap: 14px;
+    column-gap: 8px;
+    transition: all 100ms;
+    grid-template-columns: {{ style.columns }};
+} 
+.field, .field-disabled {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 7px;
+    padding: 6px;
+    box-shadow: 0 4px 6px -5px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to bottom, white, rgb(245, 245, 245));
+    border-collapse: collapse;
+    transition: all 100ms;
+    cursor: pointer;
+}
+.hidden {
+    display: none;
+}
+.hidden .type {
+    color: blue;
+}
+.hidden input, .hidden textarea, .hidden select {
+    display: block;
+}
+.field:hover {
+    box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.1);
+}
+.add {    
+    font-size: x-large;
+    font-weight: 800;
+    color: rgb(183, 183, 183);
+    margin-top: 12px;
+    border-radius: 8px;
+    padding: 2px;
+    text-align: center;
+    background-color: rgb(223, 223, 223);
+    cursor: pointer;
+    transition: all 100ms;
+    grid-column: 1 / -2;
+}
+.add:hover {
+    margin-top: 10px;
+    margin-bottom: 2px;
+    background: linear-gradient(to bottom, white, rgb(245, 245, 245));
+    box-shadow: 0 4px 6px -5px rgba(0, 0, 0, 0.1);
+}
+.add::selection {
+    background: none;
+}
+.del-btn, .submit-btn, .add-btn {
+    align-self: baseline;
+    border-radius: 4px;
+    text-align: center;
+    padding: 4px;
+    box-shadow: 0 4px 6px -5px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to bottom, rgb(210, 210, 210), rgb(200, 200, 200));
+    border: 1.5px solid rgb(180, 180, 180);
+    font-size: 10px;
+    font-weight: 800;
+    transition: all 100ms;
+    cursor: pointer;
+}
+.del-btn::selection, .submit-btn::selection, .add-btn::selection {
+    background: none;
+}
+.del-btn:hover, .submit-btn:hover, .add-btn:hover {
+    filter: invert();
+    transform: scale(1.1);
+}
+.add-btn {
+    align-items: center;
+    flex-direction: column;
+}
+.submit-btn {
+    margin-left: 22px;
+}
+input, textarea, label, select {
+    font-family: "PT Sans", sans-serif;
+    font-size: small;
+    display: none;
+    max-width: 100%;
+}
+input[type="file"] {
+    max-width: 180px;
+}
+input[type="checkbox"] {
+    align-self: baseline;
+}
+textarea {
+    resize: vertical;
+}
+.labeled-input {
+    display: none;
+    flex-direction: row;
+}
+.labeled-input input, .labeled-input label {
+    display: block;
+}
+.type {
+    color: rgb(174, 174, 174);
+    margin-top: -3px;
+    margin-bottom: 3px;
+    font-weight: 800;
+    font-size: 9px;
+}
+.value {
+    font-size: small;
+    font-weight: 300;
+}
+</style>
+{% endblock %}

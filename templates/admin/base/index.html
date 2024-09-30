@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <!-- Base Template Styles --> <style>
+    html {
+        height: 100%;
+    }
+    body {
+        zoom: 0.7;
+        font-family: "PT Sans", sans-serif;
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .side-bar {
+        height: fit-content;
+        background-color: rgb(30, 30, 30);
+        display: flex;
+        gap: 18px;
+        font-size: small;
+        padding: 0 8px;
+    }
+    .side-bar a {
+        color: rgb(181, 181, 181);
+        text-decoration: none;
+        padding: 0 3px;
+        margin: 4px 0;
+        background-color: transparent;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .side-bar a:hover {
+        color: rgb(244, 244, 244);
+        background-color: rgb(62, 62, 62);
+    }
+    .content {
+        padding-bottom: 260px;
+        color: rgb(25, 25, 25);
+        height: 100%;
+        overflow-y: scroll;
+        background-color: rgb(235, 235, 235);
+    }
+    </style>
+    {% block style %}
+
+    {% endblock %}
+</head>
+<body>
+    <div class="side-bar">
+        <a href="devices">Devices</a>
+        <a href="news">News</a>
+        <a href="about">About</a>
+        <a href="services">Services</a>
+        <a href="guide-categories">Guide Categories</a>
+        <a href="guides">Guides</a>
+        <a href="menu">Menu</a>
+    </div>
+    <div class="content">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+
+<script>
+function updateValue(event) {
+    if (event.currentTarget.children[0].innerHTML.indexOf('(update)') < 0) 
+    {
+        event.currentTarget.children[0].innerHTML += ' (update)'
+        event.currentTarget.children[0].style.color = 'blue'
+    }
+    event.currentTarget.children[1].style.display = 'none'
+    event.currentTarget.children[2].style.display = 'flex'
+}
+
+let stagingArea = []
+
+function handleChange(event) {
+
+    if (event.target.type === 'file') stagingArea.push({
+        name: event.target.name,
+        id: event.target.id,
+        value: Array.from(event.target.files)?.map(file => `../static/media/${file.name}`).reverse(),
+        files: event.target.files
+    })
+
+    else if (event.target.type === 'checkbox') stagingArea.push({
+        name: event.target.name,
+        id: event.target.id,
+        value: event.target.checked ? 1 : 0
+    })
+
+    else stagingArea.push({
+        name: event.target.name,
+        id: event.target.id,
+        value: encodeURIComponent(event.target.value)
+    })
+} 
+
+function addNewRow(event) {
+    event.target.style.display = 'none'
+    for (let element of document.getElementsByClassName('hidden')) {
+        element.style.display = 'flex'
+    }
+}
+
+</script>
+{% block script %}
+
+{% endblock %}
+
+</body>
+</html>

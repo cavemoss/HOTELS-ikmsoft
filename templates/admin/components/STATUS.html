@@ -1,0 +1,10 @@
+<div class="field" onclick="updateValue(event)"> <!-- STATUS -->
+    <span class="type">STATUS</span>
+    <span class="value">{{ row.STATUS }}</span>
+    <select id="{{row.ID}}" name="status" onchange="handleChange(event)">
+        <option value="ONLINE">ONLINE</option>
+        <option value="OFFLINE">OFFLINE</option>
+        <option value="STANDBY">STANDBY</option>
+        <option value="MALFUNCTION">MALFUNCTION</option>
+    </select>
+</div>

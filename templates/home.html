@@ -1,0 +1,48 @@
+{% extends 'base/index.html' %}
+
+{% block title %} Главная {% endblock %}
+
+{% block content %}
+<div class="h-full flex flex-col pl-10 gap-16"> 
+    
+    <!-- Ad Section -->
+    <div class="h-[370px] flex"> 
+    
+        <!-- Background Image -->
+        <div style="background-image: linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgb(26, 19, 9) 95%), url('{{ content.photos[1] }}')"
+        class="absolute right-0 bg-no-repeat bg-right bg-cover w-[700px] h-[370px]">
+        </div>
+        
+        <!-- Description -->
+        <div style="background: linear-gradient(to left, rgba(0, 0, 0, 0) 5%, rgb(26, 19, 9) 50%)"
+        class="w-[660px] h-[370px] z-10 flex flex-col gap-10">
+
+            <!-- Text -->
+            <div class="max-w-[600px] mt-auto"> 
+                {% if content.span %}
+                <span class="text-[18px] font-['Source_Sans_3',_sans-serif] font-medium">{{ content.span }}</span>
+                {% endif %}
+                <h1 class="text-[45px] font-['Nunito_Sans',sans-serif] mb-5">{{ content.header }}</h1>
+                <div class="text-[18px] font-['Source_Sans_3',_sans-serif] font-medium leading-6">{{ content.body|safe }}</div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3 items-end h-8 z-10 mb-auto"> 
+                <a href="{{ tile_content[0].href }}"><button class="text-2xl px-5 py-2 rounded-xl shadow-xl shadow-[rgba(0,0,0,0.1)] bg-[rgb(49,35,17)] font-['Source_Sans_3',sans-serif] font-medium">
+                    Подробнее
+                </button></a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Tile Section -->
+    <div id="focus" onclick="console.log()" class="flex gap-5 overflow-x-scroll p-5 pl-10 mt-[-20px] ml-[-40px] whitespace-nowrap ">
+        {% for tile in tile_content %}
+        {% if not loop.first %} {{ 'TILE.html' | set_vars(tile=tile, tw_css='min-w-[360px]') }} {% endif %}
+        {% endfor %}
+    </div>
+    
+</div>
+{% endblock %} 

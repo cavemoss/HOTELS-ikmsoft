@@ -1,0 +1,9 @@
+<div class="field" onclick="updateValue(event)"> <!-- CATEGORY -->
+    <span class="type">CATEGORY</span>
+    <span class="value">{{ row.CATEGORY }}</span>
+    <select id="{{row.ID}}" name="category" onchange="handleChange(event)">
+        {% for category in fk %}
+        <option value="{{ category }}">{{ category }}</option>
+        {% endfor %}
+    </select>
+</div>

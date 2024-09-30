@@ -1,0 +1,8 @@
+<div class="field hidden">
+    <span class="type">CATEGORY (new)</span>
+    <select id="new-category">
+        {% for category in fk %}
+        <option value="{{ category }}">{{ category }}</option>
+        {% endfor %}
+    </select>
+</div>

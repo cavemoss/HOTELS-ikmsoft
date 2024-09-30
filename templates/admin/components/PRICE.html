@@ -1,0 +1,5 @@
+<div class="field" onclick="updateValue(event)"> <!-- PRICE -->
+    <span class="type">PRICE</span>
+    <span class="value">{{ row.PRICE }}</span>
+    <input id="{{row.ID}}" name="price" type="number" onchange="handleChange(event)" value="{{row.PRICE}}">
+</div>

@@ -1,0 +1,5 @@
+<div class="field" onclick="updateValue(event)"> <!-- PHOTOS -->
+    <span class="type">PHOTOS</span>
+    <span class="value">{{ row.PHOTOS }}</span>
+    <input id="{{row.ID}}" name="photos" type="file" multiple onchange="handleChange(event)">
+</div>

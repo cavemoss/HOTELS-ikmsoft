@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#side-bar:hover #premier {
+    @apply opacity-100;
+    @apply mt-0;
+}
+
+#side-bar:hover .option {
+    @apply border-[rgba(61,61,61,0.39)];
+}
+
+#side-bar:hover .option div {
+    @apply opacity-100;
+    @apply ml-0;
+}
+
+.option:hover {
+    @apply bg-[rgba(129,129,129,0.16)];
+    @apply cursor-pointer;
+}
+
+@keyframes entryAnimationLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes entryAnimationRight {
+    from {
+        opacity: 0;
+        width: 1200px;
+    }
+    to {
+        opacity: 1;
+        width: 700px;
+    }
+}

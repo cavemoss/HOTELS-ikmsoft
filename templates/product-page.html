@@ -1,0 +1,71 @@
+{% extends 'base/index.html' %}
+
+{% block title %} {{ content.header }} {% endblock %}
+
+{% block content %}
+<div class="h-full flex flex-col overflow-hidden pl-10 gap-16">
+    <div class="h-full flex"> 
+            
+        <!-- Description -->
+        <div style="background: linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgb(26, 19, 9) 60%)"
+        class="w-full h-full pt-8 z-10 flex flex-col gap-10 opacity-0 animate-[entryAnimationLeft_400ms_ease-out_forwards]">
+
+            <!-- Text -->
+            <div class="max-w-[600px]"> 
+                {% if content.span %}
+                <span class="text-[18px] font-['Source_Sans_3',_sans-serif] font-medium">{{ content.span }}</span>
+                {% endif %}
+                <h1 class="text-[45px] font-['Nunito_Sans',sans-serif] mb-5">{{ content.header }}</h1>
+                <div class="text-[18px] font-['Source_Sans_3',_sans-serif] font-medium leading-6">{{ content.body|safe }}</div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3 items-end h-8 z-10"> 
+                {% for btn in content.buttons %}
+                <a href="{{ btn.href }}"><button class="filter [transition:all_100ms] hover:mb-1 hover:brightness-125 text-2xl px-5 py-2 rounded-xl shadow-xl shadow-[rgba(0,0,0,0.1)] bg-[rgb(38,27,13)] font-['Source_Sans_3',_sans-serif] font-medium">
+                    {{ btn.text }}
+                </button></a>
+                {% endfor %}
+            </div>
+
+            <!-- Footer -->
+            <div class="flex flex-col mt-auto pb-16">
+                <span class="text-[18px] font-['Source_Sans_3',_sans-serif] font-medium">{{ content.footer.address }}</span>
+                {% if content.footer.phone %}<span class="text-[45px]">{{ content.footer.phone }}</span>{% endif %}
+            </div>
+
+        </div>
+
+        <!-- Background Image -->
+        <div style="background-image: linear-gradient(to left, rgba(0, 0, 0, 0) 60%, rgb(26, 19, 9) 100%), url('{{ content.photos[1] }}')"
+        class="relative flex items-end ml-[-640px] right-0 bg-no-repeat bg-center bg-cover w-[1200px] h-full opacity-0 animate-[entryAnimationRight_1s_ease-out_forwards]">
+
+            <!-- QR Code -->
+            {% if content.qr_code %}
+            <div id="qr-code" class="bg-white p-2 ml-[74%] mb-[10%] [box-shadow:10px_10px_0_rgba(0,0,0,0.5)]"> </div>
+            {% endif %}
+        
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+<script>
+function generateQRCode(url) {
+
+    
+    let qrCodeContainer = document.getElementById('qr-code')
+
+    let qrCode = new QRCode(qrCodeContainer, { 
+        text: url, width: 128, height: 128, 
+        colorDark : '#000', colorLight : '#fff', 
+        correctLevel : QRCode.CorrectLevel.H
+    })
+}
+
+generateQRCode('{{ content.qr_code }}')
+
+</script>
+{% endblock %}

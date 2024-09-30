@@ -1,0 +1,16 @@
+<a href="{{ tile.href }}"> 
+<div style="background-image: url('{{ tile.photos[0] }}')" class="{{ tw_css }} flex flex-col h-[166px] p-4 rounded-lg bg-cover bg-center [box-shadow:inset_0_-60px_35px_-12px_rgba(0,0,0,0.9)] overflow-hidden cursor-pointer">  
+    {% if tile.price %}
+    <div class="m-[-17px] px-2 rounded-2xl rounded-tr-[8px] bg-[rgb(38,27,13)] text-[30px] self-end mb-auto font-['Nunito_Sans',sans-serif] font-light">
+        {% if tile.price == 1 %}
+        Бесплатно
+        {% else %}
+        От {{ tile.price }}₽
+        {% endif %}
+    </div>
+    {% endif %}
+    <div class="self-baseline mt-auto text-[29px] h-[36px] whitespace-nowrap">
+        {{ tile.text }}
+    </div>
+</div> 
+</a>

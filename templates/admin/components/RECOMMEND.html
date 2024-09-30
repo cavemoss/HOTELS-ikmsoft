@@ -1,0 +1,9 @@
+<div class="field" onclick="updateValue(event)"> <!-- RECOMMENDED -->
+    <span class="type">RECOMMENDED</span>
+    <span class="value">{{ row.RECOMMENDED }}</span>
+    <div class="labeled-input">
+        <input id="{{row.ID}}" name="recommend" type="checkbox" onchange="handleChange(event)" 
+        {% if row.RECOMMENDED %}checked{% endif %} >
+        <label for="recommend">recommend</label>
+    </div>
+</div>

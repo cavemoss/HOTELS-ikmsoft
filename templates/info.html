@@ -1,0 +1,29 @@
+{% extends 'base/index.html' %}
+
+{% block title %} Об Отеле {% endblock %}
+
+{% block content %}
+<div class="h-full flex flex-col pl-10 gap-12">
+    <div>
+        <span class="text-[18px] font-['Source_Sans_3',sans-serif] font-medium">Ваш отдых - наша ответсвенность</span>
+        <h1 class="text-[45px] font-['Nunito_Sans',sans-serif] mb-5">Отель Премьер</h1>
+        <div class="text-[18px] font-['Source_Sans_3',sans-serif] font-medium leading-6">
+            Наш отель расположен в городе Мариуполь. <br>
+            В нем есть всё для вашего комфортабельного отдыха. <br>
+            <br>
+            К Вашим услугам: уникальные по своему дизайну и комфорту просторные номера с видом на город. <br>
+            Детские площадки и охраняемая территория. <br>
+            <br>
+            Мы сделаем Ваш отпуск незабываемым! <br>
+        </div>
+    </div>
+    <div class="flex flex-col overflow-hidden">
+        <h1 class="text-[45px] font-['Nunito_Sans',sans-serif] mb-5">Почему мы?</h1>
+        <div id="focus" onclick="console.log()" class="flex gap-5 overflow-x-scroll h-full p-5 pl-10 mt-[-20px] ml-[-40px] whitespace-nowrap">
+            {% for tile in tile_content %}
+            {{ 'TILE.html' | set_vars(tile=tile, tw_css='min-w-[360px]') }}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

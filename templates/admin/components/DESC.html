@@ -1,0 +1,5 @@
+<div class="field" onclick="updateValue(event)"> <!-- DESCRIPTION -->
+    <span class="type">DESCRIPTION</span>
+    <span class="value">{{ row.DESC }}</span>
+    <textarea id="{{row.ID}}" name="desc" onchange="handleChange(event)">{{ row.DESC }}</textarea>
+</div>

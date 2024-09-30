@@ -1,0 +1,14 @@
+{% extends 'base/index.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+<div class="h-full flex flex-col overflow-hidden overflow-y-scroll pl-10">
+    <div class="text-[41px] font-['Nunito_Sans',sans-serif] py-6">{{ title }}</div>
+    <div id="focus" onclick="console.log()" class="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] overflow-y-scroll gap-5 m-[-20px] mb-5 p-5 pr-10">
+        {% for tile in tile_content %}
+        {% include 'TILE.html' %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

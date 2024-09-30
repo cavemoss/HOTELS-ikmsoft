@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-black">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+
+<!-- Goggle Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200..1000&family=Poppins:wght@500&family=Source+Sans+3:wght@200..900&display=swap" rel="stylesheet">
+
+<!-- Tailwind Link -->
+<link rel="stylesheet" href="{{ url_for('static', path='/css/main.css') }}">
+
+</head>
+<body style="zoom: 0.65" class="{% if solid_background %} bg-[rgb(26,19,9)] {% else %} bg-[url(../assets/bg.png)] {% endif %} flex bg-no-repeat bg-center bg-fixed h-full">
+
+    <!-- Side Bar -->
+    <div class="w-[120px] hover:w-[347px] [transition:all_150ms] bg-[rgba(0,0,0,0.44)]" id="side-bar">
+
+        <!-- Logo -->
+        <div class="h-[164px] flex flex-col items-center ">
+            <img class="w-[50px] h-[49px] mt-auto " src="../static/assets/icons/logo.svg" alt="">
+            <div class="text-[33px] text-white font-['Poppins',_sans-serif] h-[40px] mb-auto mt-[-40px] opacity-0 [transition:all_100ms] hover:cursor-default" id="premier">Premier</div>
+        </div>
+        
+        <!-- Menu -->
+        <div class="flex flex-col items-baseline overflow-hidden">
+
+            <!-- Options -->
+            {% for option in nav_bar_content %}
+            <a href="{{ option.href | default(option.id) }}">
+                <div class="option pl-[50px] flex gap-3 items-center h-[60px] w-full border-b-1.5 border-transparent
+                {% if option.id == current_page %} bg-[rgba(129,129,129,0.16)] {% endif %}">
+                    <img src="../static/assets/icons/{{ option.id }}.svg">
+                    <div class="h-[30px] min-w-[400px] text-white text-[22px] font-['Source_Sans_3',_sans-serif] font-medium opacity-0 ml-[-6px] [transition:all_100ms] pointer-events-none">{{ option.text }}</div>
+                </div>
+            </a>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="flex flex-col text-white font-['Nunito_Sans',sans-serif] text-[20px] font-bold w-full overflow-scroll">
+
+        <!-- Guest Info -->
+        <div class="flex items-center px-10 h-[164px] w-full">
+            <div class="flex-[45%]">Добро пожаловать!</div>
+            <div class="flex flex-[55%] justify-between ">
+                <div class="flex gap-2 items-center">
+                    <img src="../static/assets/icons/home.svg" alt="">
+                    <span>Комната {{ user_context.room }}</span>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <img src="../static/assets/icons/{{ user_context.cond }}.svg" style="width: 30px; filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%)">
+                    <span>{{ user_context.temp }}</span>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <img src="../static/assets/icons/clock.svg" alt="">
+                    <span id="time"> </span>
+                </div>
+                <span id="date"> </span>
+            </div>
+        </div>
+
+        <!-- Page Content -->
+        {% block content %}
+
+        {% endblock %}
+
+    </div>
+<script>
+function updateTime() {
+    const now = new Date()
+    const dateOptions = { day: 'numeric', month: 'long' }
+    const timeOptions = { hour: 'numeric', minute: 'numeric' }
+    
+    const dateFormatter = new Intl.DateTimeFormat('ru-RU', dateOptions)
+    const timeFormatter = new Intl.DateTimeFormat('ru-RU', timeOptions)
+    
+    const formattedDate = dateFormatter.format(now)
+    const formattedTime = timeFormatter.format(now)
+
+    document.getElementById('date').textContent = formattedDate
+    document.getElementById('time').textContent = formattedTime
+}
+
+window.onload = function() {
+    updateTime()
+    setInterval(updateTime, 1000)
+}
+
+document.getElementById('focus').firstElementChild.focus()
+
+</script>
+{% block script %}
+
+{% endblock %}
+</body>
+</html>
